@@ -7,6 +7,7 @@
         <div class="card mx-auto">
             <div class="card-header">
                 Create New Country
+                <a href="{{route('countries.index')}}" class="float-right">Back</a>
             </div>
             <div class="card-body">
                     <form method="POST" action="{{ route('countries.store') }}">

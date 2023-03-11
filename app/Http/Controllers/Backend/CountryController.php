@@ -26,4 +26,18 @@ class CountryController extends Controller
         Country::create($req->validated());
         return redirect()->route('countries.index')->with('message', 'New Country Created!');
     }
+    public function edit(Country $country)
+    {
+        return view('countries.edit', compact('country'));
+    }
+    public function update(CountryStoreRequest $req, Country $country)
+    {
+        $country->update($req->validated());
+        return redirect()->route('countries.index')->with('message', 'Country successfully Updated!');
+    }
+    public function destroy(Country $country)
+    {
+        $country->delete();
+        return redirect()->route('countries.index')->with('message', 'Country successfully Deleted!');
+    }
 }

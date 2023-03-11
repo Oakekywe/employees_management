@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Backend;
 
+use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -14,7 +15,7 @@ class UserPasswordChangeController extends Controller
             'password' => ['required', 'string', 'min:8', 'confirmed'],
         ]);
         $user->update([
-            'password'=> Hash::make($req->password)
+            'password' => Hash::make($req->password)
         ]);
         return redirect()->route('users.index')->with('message', 'New Password Successfully Updated!');
     }

@@ -1,7 +1,8 @@
 <?php
 
+use App\Http\Controllers\Backend\CountryController;
 use App\Http\Controllers\Backend\UserController;
-use App\Http\Controllers\UserPasswordChangeController;
+use App\Http\Controllers\Backend\UserPasswordChangeController as BackendUserPasswordChangeController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -24,4 +25,5 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::resource('users', UserController::class);
-Route::post('users/{user}/change_password', [UserPasswordChangeController::class, 'change_password'])->name('user.change.password');
+Route::resource('countries', CountryController::class);
+Route::post('users/{user}/change_password', [BackendUserPasswordChangeController::class, 'change_password'])->name('user.change.password');

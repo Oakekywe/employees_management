@@ -3,12 +3,12 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StateStoreRequest;
-use App\Models\Country;
+use App\Http\Requests\CityStoreRequest;
+use App\Models\City;
 use App\Models\State;
 use Illuminate\Http\Request;
 
-class StateController extends Controller
+class CityController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,11 +17,11 @@ class StateController extends Controller
      */
     public function index(Request $req)
     {
-        $states= State::all();
+        $cities= City::all();
         if ($req->search) {
-            $states = State::where('name', 'like', "%{$req->search}%")->get();
+            $cities = City::where('name', 'like', "%{$req->search}%")->get();
         }
-        return view('states.index', compact('states'));
+        return view('cities.index', compact('cities'));
     }
 
     /**
@@ -31,8 +31,8 @@ class StateController extends Controller
      */
     public function create()
     {
-        $countries= Country::all();
-        return view('states.create', compact('countries'));
+        $states= State::all();
+        return view('cities.create', compact('states'));
     }
 
     /**
@@ -41,10 +41,10 @@ class StateController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StateStoreRequest $req)
+    public function store(CityStoreRequest $req)
     {
-        State::create($req->validated());
-        return redirect()->route('states.index')->with('message', 'New State Created!');
+        City::create($req->validated());
+        return redirect()->route('cities.index')->with('message', 'New City Created!');
     }
 
     /**
@@ -64,10 +64,10 @@ class StateController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(State $state)
+    public function edit(City $city)
     {
-        $countries = Country::all();
-        return view('states.edit', compact('state','countries'));
+        $states= State::all();
+        return view('cities.edit', compact('city', 'states'));
     }
 
     /**
@@ -77,13 +77,13 @@ class StateController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(StateStoreRequest $req, State $state)
+    public function update(CityStoreRequest $req, City $city)
     {
-        $state->update([
-            'country_id'=> $req->country_id,
-            'name'=> $req->name
+        $city->update([
+            'state_id' => $req->state_id,
+            'name' => $req->name
         ]);
-        return redirect()->route('states.index')->with('message', 'State successfully Updated!');
+        return redirect()->route('cities.index')->with('message', 'City successfully Updated!');
     }
 
     /**
@@ -92,9 +92,9 @@ class StateController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(State $state)
+    public function destroy(City $city)
     {
-        $state->delete();
-        return redirect()->route('states.index')->with('message', 'State successfully Deleted!');
+        $city->delete();
+        return redirect()->route('cities.index')->with('message', 'City successfully Deleted!');
     }
 }

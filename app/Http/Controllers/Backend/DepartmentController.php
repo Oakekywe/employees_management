@@ -3,25 +3,20 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StateStoreRequest;
-use App\Models\Country;
-use App\Models\State;
+use App\Models\Department;
 use Illuminate\Http\Request;
 
-class StateController extends Controller
+class DepartmentController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $req)
+    public function index()
     {
-        $states= State::all();
-        if ($req->search) {
-            $states = State::where('name', 'like', "%{$req->search}%")->get();
-        }
-        return view('states.index', compact('states'));
+        $departments= Department::all();
+        return view('departments.index', compact('departments'));
     }
 
     /**
@@ -31,8 +26,7 @@ class StateController extends Controller
      */
     public function create()
     {
-        $countries= Country::all();
-        return view('states.create', compact('countries'));
+        return view('departments.create');
     }
 
     /**
@@ -41,10 +35,15 @@ class StateController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StateStoreRequest $req)
+    public function store(Request $req)
     {
-        State::create($req->validated());
-        return redirect()->route('states.index')->with('message', 'New State Created!');
+        $req->validate([
+            'name'=> ['required']
+        ]);
+        Department::create([
+            'name'=> $req->name
+        ]);
+        return redirect()->route('departments.index')->with('message', 'New Department Created!');
     }
 
     /**
@@ -64,10 +63,9 @@ class StateController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(State $state)
+    public function edit(Department $department)
     {
-        $countries = Country::all();
-        return view('states.edit', compact('state','countries'));
+        return view('departments.edit', compact('department'));
     }
 
     /**
@@ -77,13 +75,15 @@ class StateController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(StateStoreRequest $req, State $state)
+    public function update(Request $req, Department $department)
     {
-        $state->update([
-            'country_id'=> $req->country_id,
+        $req->validate([
+            'name' => ['required']
+        ]);
+        $department->update([
             'name'=> $req->name
         ]);
-        return redirect()->route('states.index')->with('message', 'State successfully Updated!');
+        return redirect()->route('departments.index')->with('message', 'Department successfully Updated!');
     }
 
     /**
@@ -92,9 +92,9 @@ class StateController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(State $state)
+    public function destroy(Department $department)
     {
-        $state->delete();
-        return redirect()->route('states.index')->with('message', 'State successfully Deleted!');
+        $department->delete();
+        return redirect()->route('departments.index')->with('message', 'Department successfully Deleted!');
     }
 }
